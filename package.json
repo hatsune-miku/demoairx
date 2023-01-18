@@ -1,21 +1,21 @@
 {
-  "name": "electron-vite-react",
-  "version": "2.1.0",
+  "name": "demoairx",
+  "version": "0.1",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "",
+  "author": "EGGTARTc",
   "license": "MIT",
   "private": true,
   "debug": {
     "env": {
-      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:5173/"
     }
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
-    "e2e": "npx playwright test"
+    "e2e": "yarn playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.29.1",
