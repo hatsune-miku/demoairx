@@ -1,13 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './samples/node-api'
-import './index.scss'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./global.scss";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+import "@fontsource/public-sans";
+import { CssVarsProvider } from "@mui/joy";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <CssVarsProvider>
+      <App />
+    </CssVarsProvider>
+  </React.StrictMode>
+);
 
-postMessage({ payload: 'removeLoading' }, '*')
+postMessage({ payload: "removeLoading" }, "*");
