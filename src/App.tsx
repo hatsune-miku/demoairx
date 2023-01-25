@@ -1,12 +1,10 @@
 import "./App.scss"
 import Main from "./components/Main"
 
-function App() {
+export default function App() {
   return (
     <div className="main-div">
       <Main></Main>
     </div>
   )
 }
-
-export default App

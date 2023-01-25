@@ -7,7 +7,7 @@ import {
   Tabs,
   useColorScheme,
 } from "@mui/joy"
-import NodeApis from "../bridge/node-api"
+
 import TabDashboard from "./TabDashboard"
 import TabConfiguration from "./TabConfiguration"
 import TabAbout from "./TabAbout"
