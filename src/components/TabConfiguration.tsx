@@ -1,9 +1,7 @@
-import { Divider, Input } from "@mui/joy"
+import { Input } from "@mui/joy"
 import { NodeApis } from "@/bridge/node-api"
 import type { Configuration } from "@/bridge/node-api"
-import { Box } from "@mui/system"
-import React, { useState } from "react"
-import Global from "@/bridge/global"
+import { useState } from "react"
 import Config from "@/bridge/config"
 
 function TabConfiguration() {
