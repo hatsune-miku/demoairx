@@ -4,6 +4,7 @@ import type { Configuration } from "@/bridge/node-api"
 import { Box } from "@mui/system"
 import React, { useState } from "react"
 import Global from "@/bridge/global"
+import Config from "@/bridge/config"
 
 function TabConfiguration() {
   let [configs, setConfigs] = useState(NodeApis.getConfiguration())
@@ -17,6 +18,7 @@ function TabConfiguration() {
             <Input
               value={config.value}
               onChange={(event) => {
+                Config.setConfig(config.key, event.target.value)
                 setConfigs(
                   configs.map((c) =>
                     c.name == config.name
@@ -26,7 +28,6 @@ function TabConfiguration() {
                 )
               }}
             />
-            <Divider />
           </div>
         )
       })}

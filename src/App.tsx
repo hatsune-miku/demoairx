@@ -1,10 +1,24 @@
+import React, { useState } from "react"
 import "./App.scss"
 import Main from "./components/Main"
+import { libairx_proxy as libairx } from "./bridge/node-api"
 
-export default function App() {
+const UserContext = React.createContext({})
+
+function App() {
+  const [global, setGlobal] = useState({
+    discoveryServiceOnline: !libairx.restore().isNull(),
+    textServiceOnline: !libairx.restore().isNull(),
+    airxPointer: Buffer.alloc(0),
+  })
+
   return (
     <div className="main-div">
-      <Main></Main>
+      <UserContext.Provider value={[global, setGlobal]}>
+        <Main></Main>
+      </UserContext.Provider>
     </div>
   )
 }
+
+export { UserContext, App }

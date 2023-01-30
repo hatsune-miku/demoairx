@@ -11,12 +11,44 @@ import {
 import TabDashboard from "./TabDashboard"
 import TabConfiguration from "./TabConfiguration"
 import TabAbout from "./TabAbout"
+import { libairx_proxy as libairx } from "@/bridge/node-api"
+import Config from "@/bridge/config"
+import { useContext, useEffect } from "react"
+import { UserContext } from "@/App"
 
 function Main() {
   const { mode, setMode } = useColorScheme()
-
   function toggleMode() {
     setMode(mode === "light" ? "dark" : "light")
+  }
+  const [global, setGlobal] = useContext(UserContext)
+
+  if (libairx.isFirstRun()) {
+    console.log("App: Initialized")
+
+    let airxPointer = libairx.createService(
+      parseInt(Config.getConfig(Config.LAN_DISCOVERY_PORT, "9818")),
+      0,
+      "0.0.0.0",
+      parseInt(Config.getConfig(Config.LAN_TEXT_SERVICE_PORT, "9819"))
+    )
+
+    console.log(
+      "App: airx struct pointer 0x" + airxPointer.address().toString(16)
+    )
+
+    libairx.lanDiscoveryServiceAsync(airxPointer)
+    libairx.textServiceAsync(airxPointer)
+    libairx.startAutoBroadcast(airxPointer)
+
+    setTimeout(() => {
+      console.log("App: Discovery service online")
+      setGlobal({
+        ...global,
+        discoveryServiceOnline: !libairx.restore().isNull(),
+        textServiceOnline: !libairx.restore().isNull(),
+      })
+    }, 700)
   }
 
   return (
@@ -34,7 +66,7 @@ function Main() {
         </b>
       </Alert>
 
-      <h3>libairx Control Panel</h3>
+      <h3>Control Panel</h3>
 
       <Tabs
         aria-label="Basic tabs"
@@ -44,7 +76,7 @@ function Main() {
         <TabList>
           <Tab>Dashboard</Tab>
           <Tab>Configuration</Tab>
-          <Tab>About libairx</Tab>
+          <Tab>About</Tab>
         </TabList>
         <TabPanel value={0} sx={{ p: 2 }}>
           <TabDashboard></TabDashboard>

@@ -12,6 +12,7 @@ export default defineConfig(({ command }) => {
 
   const sourcemap = command === "serve" || !!process.env.VSCODE_DEBUG
 
+  /** @type {import('vite').UserConfig} */
   return {
     resolve: {
       alias: {
