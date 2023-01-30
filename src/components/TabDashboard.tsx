@@ -5,7 +5,11 @@ import { libairx_proxy as libairx } from "@/bridge/node-api"
 import Config from "@/bridge/config"
 
 function TabDashboard() {
-  const [global, setGlobal] = useContext(UserContext)
+  const [global, setGlobal] = useState({
+    discoveryServiceOnline: !libairx.restore().isNull(),
+    textServiceOnline: !libairx.restore().isNull(),
+    airxPointer: Buffer.alloc(0),
+  })
   const [peers, setPeers] = useState(
     libairx.getPeers(libairx.restore()).split(",")
   )

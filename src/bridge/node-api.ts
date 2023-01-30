@@ -1,6 +1,8 @@
 import process from "node:process"
-import libairx from "./libairx-bridge"
+import { types, callback_string, libairx } from "./libairx-bridge"
 import Config from "./config"
+
+const ffi = require("ffi-napi")
 
 type Configuration = {
   key: string
@@ -68,14 +70,31 @@ const libairx_proxy = {
   lanDiscoveryService(airx_ptr: Buffer) {
     libairx.airx_lan_discovery_service(airx_ptr)
   },
-  textService(airx_ptr: Buffer) {
-    libairx.airx_text_service(airx_ptr)
+  textService(airx_ptr: Buffer, callback: Function) {
+    let ffiCallback = ffi.Callback(
+      types.void,
+      [callback_string],
+      (text: Buffer) => {
+        callback(text.toString("utf8"))
+      }
+    )
+    global.ffi = ffiCallback
+    libairx.airx_text_service(airx_ptr, ffiCallback)
   },
   lanDiscoveryServiceAsync(airx_ptr: Buffer) {
     libairx.airx_lan_discovery_service_async(airx_ptr)
   },
-  textServiceAsync(airx_ptr: Buffer) {
-    libairx.airx_text_service_async(airx_ptr)
+  textServiceAsync(airx_ptr: Buffer, callback: Function) {
+    // ffi may be GCed!
+    let ffiCallback = ffi.Callback(
+      types.void,
+      [callback_string],
+      (text: Buffer) => {
+        callback(text.toString("utf8"))
+      }
+    )
+    global.ffi_async = ffiCallback
+    libairx.airx_text_service_async(airx_ptr, ffiCallback)
   },
   lanBroadcast(airx_ptr: Buffer): boolean {
     return libairx.airx_lan_broadcast(airx_ptr)
@@ -88,7 +107,22 @@ const libairx_proxy = {
   startAutoBroadcast(airx_ptr: Buffer) {
     libairx.airx_start_auto_broadcast(airx_ptr)
   },
+  sendText(airx_ptr: Buffer, peer_host: string, text: string) {
+    libairx.airx_send_text(
+      airx_ptr,
+      Buffer.from(peer_host, "utf8"),
+      Buffer.from(text, "utf8")
+    )
+  },
+  broadcastText(airx_ptr: Buffer, text: string) {
+    libairx.airx_broadcast_text(airx_ptr, Buffer.from(text, "utf8"))
+  },
 }
 
 export { NodeApis, libairx_proxy }
 export type { Configuration }
+
+/**
+ *     airx_send_text: [types.void, [pvoid, pchar, pchar]],
+    airx_broadcast_text: [types.void, [pvoid, pchar]],
+ */

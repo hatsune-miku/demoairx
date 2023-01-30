@@ -15,14 +15,17 @@ import { libairx_proxy as libairx } from "@/bridge/node-api"
 import Config from "@/bridge/config"
 import { useContext, useEffect } from "react"
 import { UserContext } from "@/App"
+import ClipboardJS from "clipboard"
+import Global from "@/bridge/global"
+
+// A function that never got gc-ed
+global.shared = {}
 
 function Main() {
   const { mode, setMode } = useColorScheme()
   function toggleMode() {
     setMode(mode === "light" ? "dark" : "light")
   }
-  const [global, setGlobal] = useContext(UserContext)
-
   if (libairx.isFirstRun()) {
     console.log("App: Initialized")
 
@@ -32,23 +35,33 @@ function Main() {
       "0.0.0.0",
       parseInt(Config.getConfig(Config.LAN_TEXT_SERVICE_PORT, "9819"))
     )
-
     console.log(
       "App: airx struct pointer 0x" + airxPointer.address().toString(16)
     )
 
     libairx.lanDiscoveryServiceAsync(airxPointer)
-    libairx.textServiceAsync(airxPointer)
+    libairx.textServiceAsync(airxPointer, (s: string) => {
+      console.log("App: Text service received: " + s)
+      ClipboardJS.copy(s)
+    })
     libairx.startAutoBroadcast(airxPointer)
 
-    setTimeout(() => {
-      console.log("App: Discovery service online")
-      setGlobal({
-        ...global,
-        discoveryServiceOnline: !libairx.restore().isNull(),
-        textServiceOnline: !libairx.restore().isNull(),
-      })
-    }, 700)
+    let clipboard = ""
+    function listenClipboard() {
+      window.navigator.clipboard
+        .readText()
+        .then((new_clip) => {
+          if (new_clip !== clipboard) {
+            clipboard = new_clip
+            console.log("App: Clipboard changed: " + clipboard)
+            libairx.broadcastText(airxPointer, clipboard)
+            console.log("App: Text broadcasted.")
+          }
+        })
+        .catch((_) => {})
+      setTimeout(listenClipboard, 500)
+    }
+    listenClipboard()
   }
 
   return (

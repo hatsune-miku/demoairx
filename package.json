@@ -1,6 +1,6 @@
 {
   "name": "demoairx",
-  "version": "0.1",
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "",
   "author": "EGGTARTc",
@@ -45,7 +45,8 @@
     "@mui/material": "^5.11.5",
     "@reduxjs/toolkit": "^1.9.1",
     "@types/ref-napi": "^3.0.6",
-    "electron-rebuild": "^3.2.9",
+    "clipboard": "^2.0.11",
+    "clipboard-event": "^1.6.0",
     "ffi-napi": "^4.0.3",
     "redux": "^4.2.0"
   }

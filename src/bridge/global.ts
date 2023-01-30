@@ -1,3 +1,4 @@
+import ClipboardJS from "clipboard"
 import React, { useState } from "react"
 
 export default class Global {

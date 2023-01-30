@@ -89,7 +89,7 @@ function TabAbout() {
         sx={{ width: "100%" }}
       >
         {credits.map((credit) => (
-          <Grid item xs={6} key={credit.name}>
+          <Grid xs={6} key={credit.name}>
             {makeCredit(credit.name, credit.part, credit.description)}
           </Grid>
         ))}

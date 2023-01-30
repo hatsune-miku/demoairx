@@ -11,16 +11,27 @@
   mac: {
     artifactName: "${productName}_${version}.${ext}",
     target: ["dmg"],
-    arch: ["arm64"],
+    extraResources: [
+      {
+        from: "src/assets/libairx.dylib",
+        to: "../Frameworks",
+      },
+    ],
   },
   win: {
     target: [
       {
         target: "nsis",
-        arch: ["x64"],
+        arch: ["arm64"],
       },
     ],
     artifactName: "${productName}_${version}.${ext}",
+    extraResources: [
+      {
+        from: "src/assets/libairx.dll",
+        to: "",
+      },
+    ],
   },
   nsis: {
     oneClick: false,
