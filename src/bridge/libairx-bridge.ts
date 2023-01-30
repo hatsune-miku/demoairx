@@ -7,7 +7,11 @@ const pchar = ref.refType(types.char) // = Buffer
 const callback_string = "string"
 const raw_ptr = "pointer"
 
-const libairx = ffi.Library("libairx", {
+// production or development
+const libairx_path =
+  process.env.NODE_ENV === "production" ? "libairx" : "src/assets/libairx"
+
+const libairx = ffi.Library(libairx_path, {
   airx_version: [types.int, []],
   airx_is_first_run: [types.bool, []],
   airx_create: [

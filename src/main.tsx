@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { App } from "./App"
+import App from "./App"
 import "./global.scss"
 
 import "@fontsource/public-sans"
@@ -8,7 +8,7 @@ import { CssVarsProvider, extendTheme } from "@mui/joy"
 
 const paletteLovely = {
   plainColor: "#fb7299ff",
-  plainHoverBg: "#fa729922",
+  plainHoverBg: "#fb729922",
   plainActiveBg: "#fb729944",
 }
 

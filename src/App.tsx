@@ -1,11 +1,13 @@
-import React, { useState } from "react"
 import "./App.scss"
 import Main from "./components/Main"
-import { libairx_proxy as libairx } from "./bridge/node-api"
-
-const UserContext = React.createContext({})
+import { useColorScheme } from "@mui/joy"
 
 function App() {
+  const { mode, setMode } = useColorScheme()
+  function toggleMode() {
+    setMode(mode === "light" ? "dark" : "light")
+  }
+  setMode("dark")
   return (
     <div className="main-div">
       <Main></Main>
@@ -13,4 +15,4 @@ function App() {
   )
 }
 
-export { UserContext, App }
+export default App

@@ -52,7 +52,7 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    width: 545,
+    width: 495,
     height: 800,
   })
 

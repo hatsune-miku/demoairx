@@ -1,12 +1,4 @@
-import useStickyState from "@/util/sticky_state"
-
-import {
-  Favorite,
-  FavoriteBorder,
-  FavoriteBorderOutlined,
-  FavoriteBorderRounded,
-  List,
-} from "@mui/icons-material"
+import { Favorite, FavoriteBorderRounded } from "@mui/icons-material"
 import { Card, Grid, IconButton, Typography } from "@mui/joy"
 import { Box, Container } from "@mui/system"
 import { useState } from "react"

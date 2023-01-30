@@ -1,31 +1,16 @@
-import {
-  Alert,
-  Button,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
-  useColorScheme,
-} from "@mui/joy"
+import { Alert, Box, Tab, TabList, TabPanel, Tabs } from "@mui/joy"
 
 import TabDashboard from "./TabDashboard"
 import TabConfiguration from "./TabConfiguration"
 import TabAbout from "./TabAbout"
 import { libairx_proxy as libairx } from "@/bridge/node-api"
 import Config from "@/bridge/config"
-import { useContext, useEffect } from "react"
-import { UserContext } from "@/App"
 import ClipboardJS from "clipboard"
-import Global from "@/bridge/global"
 
 // A function that never got gc-ed
 global.shared = {}
 
 function Main() {
-  const { mode, setMode } = useColorScheme()
-  function toggleMode() {
-    setMode(mode === "light" ? "dark" : "light")
-  }
   if (libairx.isFirstRun()) {
     console.log("App: Initialized")
 
@@ -79,7 +64,9 @@ function Main() {
         </b>
       </Alert>
 
-      <h3>Control Panel</h3>
+      <Box sx={(t) => t.typography.h3} style={{ marginBottom: "12px" }}>
+        Control Panel
+      </Box>
 
       <Tabs
         aria-label="Basic tabs"
