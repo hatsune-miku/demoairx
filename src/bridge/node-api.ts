@@ -61,10 +61,12 @@ const libairx_proxy = {
     text_service_listen_addr: string,
     text_service_listen_port: number
   ): Buffer {
+    let buffer = NodeApis.createStringBuffer(text_service_listen_addr)
     return libairx.airx_create(
       discovery_service_server_port,
       discovery_service_client_port,
-      NodeApis.createStringBuffer(text_service_listen_addr),
+      buffer,
+      buffer.length,
       text_service_listen_port
     )
   },
@@ -86,9 +88,9 @@ const libairx_proxy = {
   textService(airx_ptr: Buffer, callback: Function) {
     let ffiCallback = ffi.Callback(
       types.void,
-      [callback_string],
-      (text: Buffer) => {
-        callback(text.toString("utf8"))
+      [callback_string, types.uint],
+      (text: Buffer, length: number) => {
+        callback(text.toString("utf8").substring(0, length))
       }
     )
     let ffiCallback2 = ffi.Callback(types.bool, [], () => false)
@@ -100,9 +102,9 @@ const libairx_proxy = {
     // ffi may be GCed!
     let ffiCallback = ffi.Callback(
       types.void,
-      [callback_string],
-      (text: Buffer) => {
-        callback(text.toString("utf8"))
+      [callback_string, types.uint],
+      (text: Buffer, length: number) => {
+        callback(text.toString("utf8").substring(0, length))
       }
     )
     let ffiCallback2 = ffi.Callback(types.bool, [], () => false)
@@ -122,15 +124,20 @@ const libairx_proxy = {
   startAutoBroadcast(airx_ptr: Buffer) {
     libairx.airx_start_auto_broadcast(airx_ptr)
   },
-  sendText(airx_ptr: Buffer, peer_host: string, text: string) {
+  sendText(airx_ptr: Buffer, peerHost: string, text: string) {
+    let hostBuffer = NodeApis.createStringBuffer(peerHost)
+    let textBuffer = NodeApis.createStringBuffer(text)
     libairx.airx_send_text(
       airx_ptr,
-      NodeApis.createStringBuffer(peer_host),
-      NodeApis.createStringBuffer(text)
+      hostBuffer,
+      hostBuffer.length,
+      textBuffer,
+      textBuffer.length
     )
   },
   broadcastText(airx_ptr: Buffer, text: string) {
-    libairx.airx_broadcast_text(airx_ptr, NodeApis.createStringBuffer(text))
+    let buffer = NodeApis.createStringBuffer(text)
+    libairx.airx_broadcast_text(airx_ptr, buffer, buffer.length)
   },
 }
 
