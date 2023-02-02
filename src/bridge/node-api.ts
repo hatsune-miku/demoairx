@@ -111,8 +111,8 @@ const libairx_proxy = {
   },
   getPeers(airx_ptr: Buffer): string {
     let buffer = NodeApis.createEmptyBuffer(4096)
-    libairx.airx_get_peers(airx_ptr, buffer)
-    return buffer.toString("utf8")
+    let len = libairx.airx_get_peers(airx_ptr, buffer)
+    return buffer.toString("utf8").substring(0, len)
   },
   startAutoBroadcast(airx_ptr: Buffer) {
     libairx.airx_start_auto_broadcast(airx_ptr)
