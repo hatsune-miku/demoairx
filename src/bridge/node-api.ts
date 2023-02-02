@@ -30,10 +30,14 @@ class NodeApis {
     ]
   }
 
-  static createStringBuffer(capacity: number) {
+  static createEmptyBuffer(capacity: number): Buffer {
     let buffer = Buffer.alloc(capacity)
     buffer.fill(0)
     return buffer
+  }
+
+  static createStringBuffer(str: string): Buffer {
+    return Buffer.from(str + "\0", "utf8")
   }
 }
 
@@ -60,7 +64,7 @@ const libairx_proxy = {
     return libairx.airx_create(
       discovery_service_server_port,
       discovery_service_client_port,
-      Buffer.from(text_service_listen_addr, "utf8"),
+      NodeApis.createStringBuffer(text_service_listen_addr),
       text_service_listen_port
     )
   },
@@ -111,7 +115,7 @@ const libairx_proxy = {
     return libairx.airx_lan_broadcast(airx_ptr)
   },
   getPeers(airx_ptr: Buffer): string {
-    let buffer = NodeApis.createStringBuffer(4096)
+    let buffer = NodeApis.createEmptyBuffer(4096)
     libairx.airx_get_peers(airx_ptr, buffer)
     return buffer.toString("utf8")
   },
@@ -121,12 +125,12 @@ const libairx_proxy = {
   sendText(airx_ptr: Buffer, peer_host: string, text: string) {
     libairx.airx_send_text(
       airx_ptr,
-      Buffer.from(peer_host, "utf8"),
-      Buffer.from(text, "utf8")
+      NodeApis.createStringBuffer(peer_host),
+      NodeApis.createStringBuffer(text)
     )
   },
   broadcastText(airx_ptr: Buffer, text: string) {
-    libairx.airx_broadcast_text(airx_ptr, Buffer.from(text, "utf8"))
+    libairx.airx_broadcast_text(airx_ptr, NodeApis.createStringBuffer(text))
   },
 }
 
