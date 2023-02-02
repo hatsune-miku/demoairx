@@ -37,7 +37,7 @@ class NodeApis {
   }
 
   static createStringBuffer(str: string): Buffer {
-    return Buffer.from(str + "\0", "utf8")
+    return Buffer.from(str, "utf8")
   }
 }
 
@@ -90,7 +90,7 @@ const libairx_proxy = {
       types.void,
       [callback_string, types.uint],
       (text: Buffer, length: number) => {
-        callback(text.toString("utf8").substring(0, length))
+        callback(text.toString("utf8").substring(0, length), length)
       }
     )
     let ffiCallback2 = ffi.Callback(types.bool, [], () => false)
@@ -104,7 +104,8 @@ const libairx_proxy = {
       types.void,
       [callback_string, types.uint],
       (text: Buffer, length: number) => {
-        callback(text.toString("utf8").substring(0, length))
+        console.log(text.toString("utf8"), length)
+        callback(text.toString("utf8").substring(0, length), length)
       }
     )
     let ffiCallback2 = ffi.Callback(types.bool, [], () => false)

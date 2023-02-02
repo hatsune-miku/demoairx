@@ -16,7 +16,7 @@ const libairx = ffi.Library(libairx_path, {
   airx_is_first_run: [types.bool, []],
   airx_create: [
     struct_ptr,
-    [types.uint16, types.uint16, struct_ptr, types.uint, types.uint16],
+    [types.uint16, types.uint16, pchar, types.uint, types.uint16],
   ],
   airx_restore: [struct_ptr, []],
   airx_lan_discovery_service: [types.void, [struct_ptr, raw_ptr]],
