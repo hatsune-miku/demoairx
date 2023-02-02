@@ -26,7 +26,6 @@ function Main() {
 
     libairx.lanDiscoveryServiceAsync(airxPointer)
     libairx.textServiceAsync(airxPointer, (s: string, len: number) => {
-      console.log("App: Text service received: " + s, "len: " + len)
       ClipboardJS.copy(s)
     })
     libairx.startAutoBroadcast(airxPointer)

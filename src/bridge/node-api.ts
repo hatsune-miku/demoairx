@@ -48,13 +48,6 @@ const libairx_proxy = {
   isFirstRun(): boolean {
     return libairx.airx_is_first_run()
   },
-  /**
-   * discovery_service_server_port: u16,
-    discovery_service_client_port: u16,
-    text_service_listen_addr: *mut c_char,
-    text_service_listen_port: u16,
-   * @returns 
-   */
   createService(
     discovery_service_server_port: number,
     discovery_service_client_port: number,
@@ -104,7 +97,6 @@ const libairx_proxy = {
       types.void,
       [callback_string, types.uint],
       (text: Buffer, length: number) => {
-        console.log(text.toString("utf8"), length)
         callback(text.toString("utf8").substring(0, length), length)
       }
     )
