@@ -67,9 +67,18 @@ const libairx_proxy = {
   restore(): Buffer {
     return libairx.airx_restore()
   },
+
   lanDiscoveryService(airx_ptr: Buffer) {
-    libairx.airx_lan_discovery_service(airx_ptr)
+    let ffiCallback = ffi.Callback(types.bool, [], () => false)
+    global.ffi_discovery = ffiCallback
+    libairx.airx_lan_discovery_service(airx_ptr, ffiCallback)
   },
+  lanDiscoveryServiceAsync(airx_ptr: Buffer) {
+    let ffiCallback = ffi.Callback(types.bool, [], () => false)
+    global.ffi_discovery2 = ffiCallback
+    libairx.airx_lan_discovery_service_async(airx_ptr, ffiCallback)
+  },
+
   textService(airx_ptr: Buffer, callback: Function) {
     let ffiCallback = ffi.Callback(
       types.void,
@@ -78,11 +87,10 @@ const libairx_proxy = {
         callback(text.toString("utf8"))
       }
     )
+    let ffiCallback2 = ffi.Callback(types.bool, [], () => false)
     global.ffi = ffiCallback
-    libairx.airx_text_service(airx_ptr, ffiCallback)
-  },
-  lanDiscoveryServiceAsync(airx_ptr: Buffer) {
-    libairx.airx_lan_discovery_service_async(airx_ptr)
+    global.ffi2 = ffiCallback2
+    libairx.airx_text_service(airx_ptr, ffiCallback, ffiCallback2)
   },
   textServiceAsync(airx_ptr: Buffer, callback: Function) {
     // ffi may be GCed!
@@ -93,9 +101,12 @@ const libairx_proxy = {
         callback(text.toString("utf8"))
       }
     )
+    let ffiCallback2 = ffi.Callback(types.bool, [], () => false)
     global.ffi_async = ffiCallback
-    libairx.airx_text_service_async(airx_ptr, ffiCallback)
+    global.ffi_async2 = ffiCallback2
+    libairx.airx_text_service_async(airx_ptr, ffiCallback, ffiCallback2)
   },
+
   lanBroadcast(airx_ptr: Buffer): boolean {
     return libairx.airx_lan_broadcast(airx_ptr)
   },
