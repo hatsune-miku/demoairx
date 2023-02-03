@@ -28,7 +28,6 @@ function Main() {
     libairx.textServiceAsync(airxPointer, (s: string, len: number) => {
       ClipboardJS.copy(s)
     })
-    libairx.startAutoBroadcast(airxPointer)
 
     let clipboard = ""
     function listenClipboard() {
@@ -43,7 +42,7 @@ function Main() {
           }
         })
         .catch((_) => {})
-      setTimeout(listenClipboard, 200)
+      setTimeout(listenClipboard, 500)
     }
     listenClipboard()
   }

@@ -7,7 +7,6 @@ function App() {
   function toggleMode() {
     setMode(mode === "light" ? "dark" : "light")
   }
-  setMode("dark")
   return (
     <div className="main-div">
       <Main></Main>
