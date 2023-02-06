@@ -29,7 +29,7 @@ class NodeApis {
       },
       {
         key: Config.GROUP_IDENTITY,
-        name: "Group Identity",
+        name: "Group Identity (0~255)",
         value: Config.getConfig(Config.GROUP_IDENTITY, "0"),
       },
     ]

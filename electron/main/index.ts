@@ -52,7 +52,7 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    width: 495,
+    width: process.env.VITE_DEV_SERVER_URL ? 990 : 495,
     height: 800,
   })
 
