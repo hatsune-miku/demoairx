@@ -18,7 +18,8 @@ function Main() {
       parseInt(Config.getConfig(Config.LAN_DISCOVERY_PORT, "9818")),
       0,
       "0.0.0.0",
-      parseInt(Config.getConfig(Config.LAN_TEXT_SERVICE_PORT, "9819"))
+      parseInt(Config.getConfig(Config.LAN_TEXT_SERVICE_PORT, "9819")),
+      parseInt(Config.getConfig(Config.GROUP_IDENTITY, "0"))
     )
     console.log(
       "App: airx struct pointer 0x" + airxPointer.address().toString(16)

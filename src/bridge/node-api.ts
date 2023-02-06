@@ -27,6 +27,11 @@ class NodeApis {
         name: "LAN Text Service Port",
         value: Config.getConfig(Config.LAN_TEXT_SERVICE_PORT, "9819"),
       },
+      {
+        key: Config.GROUP_IDENTITY,
+        name: "Group Identity",
+        value: Config.getConfig(Config.GROUP_IDENTITY, "0"),
+      },
     ]
   }
 
@@ -52,7 +57,8 @@ const libairx_proxy = {
     discovery_service_server_port: number,
     discovery_service_client_port: number,
     text_service_listen_addr: string,
-    text_service_listen_port: number
+    text_service_listen_port: number,
+    group_identity: number
   ): Buffer {
     let buffer = NodeApis.createStringBuffer(text_service_listen_addr)
     return libairx.airx_create(
@@ -60,7 +66,8 @@ const libairx_proxy = {
       discovery_service_client_port,
       buffer,
       buffer.length,
-      text_service_listen_port
+      text_service_listen_port,
+      group_identity % 255
     )
   },
   restore(): Buffer {
